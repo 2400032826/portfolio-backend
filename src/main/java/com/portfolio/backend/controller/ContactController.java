@@ -23,14 +23,27 @@ public class ContactController {
 
     @PostMapping("/send-otp")
     public String sendOtp(@RequestBody OtpRequest request) {
-        String otp = String.format("%06d", new Random().nextInt(900000) + 100000);
+        try {
+            String otp = String.format("%06d", new Random().nextInt(900000) + 100000);
 
-        String sql = "INSERT INTO user_otp (email, name, otp, is_verified) VALUES (?, ?, ?, FALSE) " +
-                     "ON DUPLICATE KEY UPDATE name=?, otp=?, is_verified=FALSE";
-        jdbcTemplate.update(sql, request.getEmail(), request.getName(), otp, request.getName(), otp);
+            String sql = "INSERT INTO user_otp (email, name, otp, is_verified) VALUES (?, ?, ?, FALSE) " +
+                    "ON DUPLICATE KEY UPDATE name=?, otp=?, is_verified=FALSE";
 
-        emailService.sendOtpEmail(request.getEmail(), otp);
-        return "OTP sent successfully to " + request.getEmail();
+            jdbcTemplate.update(sql,
+                    request.getEmail(),
+                    request.getName(),
+                    otp,
+                    request.getName(),
+                    otp);
+
+            emailService.sendOtpEmail(request.getEmail(), otp);
+
+            return "OTP sent successfully";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.toString();
+        }
     }
 
     @PostMapping("/verify-otp")
