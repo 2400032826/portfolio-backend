@@ -15,7 +15,7 @@ public class EmailService {
     @Async
     public void sendOtpEmail(String toEmail, String otp) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("harikasina50@gmail.com");
+        message.setFrom("your-verified-email@example.com"); // <-- Replace with your verified Brevo sender email
         message.setTo(toEmail);
         message.setSubject("Your Verification Code (OTP)");
         message.setText("Hello,\n\nYour OTP for contacting K Venkat Chowdary is: " + otp + "\n\nThis code is valid for 10 minutes.");
@@ -25,7 +25,7 @@ public class EmailService {
     @Async
     public void sendNoReplyConfirmation(String toEmail, String name) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("harikasina50@gmail.com");
+        message.setFrom("your-verified-email@example.com"); // <-- Replace with your verified Brevo sender email
         message.setTo(toEmail);
         message.setSubject("NO-REPLY: Message Received");
         message.setText("Dear " + name + ",\n\nThank you for reaching out! Your response has been recorded. I will get back to you shortly.\n\n*** This is an automated no-reply notification. ***");
